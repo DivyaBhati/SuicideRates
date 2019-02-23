@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8" />
+      <title>HackIllinois</title>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+      <link rel="stylesheet" href="static/style.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  </head>
+
+  <body>
+    <div class="info">
+      Suicide rates.
+    </div>
+  	<div class="graphtitle"> USA Suicide Rates</div>
+    <div class="graph">
+  	<div class="graphcontainer">
+      	<canvas id="US"></canvas>
+      	<script>
+       	    var canvas = document.getElementById("US");
+  			    var ctx = canvas.getContext('2d');
+            var stroke1 = ctx.createLinearGradient(0, 0, 1000, 0);
+            stroke1.addColorStop(0, 'rgb(254,235,226)');
+            stroke1.addColorStop(.25, 'rgb(251,180,185)');
+            stroke1.addColorStop(.5, 'rgb(247,104,161)');
+            stroke1.addColorStop(.75, 'rgb(197,27,138)');
+            stroke1.addColorStop(1, 'rgb(122,1,119)');
+
+            var stroke2 = ctx.createLinearGradient(0, 0, 1000, 0);
+            stroke2.addColorStop(0, 'rgb(255,255,178)');
+            stroke2.addColorStop(.25, 'rgb(254,204,92)');
+            stroke2.addColorStop(.5, 'rgb(253,141,60)');
+            stroke2.addColorStop(.75, 'rgb(240,59,32)');
+            stroke2.addColorStop(1, 'rgb(189,0,38)');
+
+            var stroke3 = ctx.createLinearGradient(0, 0, 1000, 0);
+            stroke3.addColorStop(0, 'rgb(255,255,204)');
+            stroke3.addColorStop(.25, 'rgb(161,218,180)');
+            stroke3.addColorStop(.5, 'rgb(65,182,196)');
+            stroke3.addColorStop(.75, 'rgb(44,127,184)');
+            stroke3.addColorStop(1, 'rgb(37,52,148)');
+
+            var stroke4 = ctx.createLinearGradient(0, 0, 1000, 0);
+            stroke4.addColorStop(0, 'rgb(254,240,217)');
+            stroke4.addColorStop(.25, 'rgb(253,204,138)');
+            stroke4.addColorStop(.5, 'rgb(252,141,89)');
+            stroke4.addColorStop(.75, 'rgb(227,74,51)');
+            stroke4.addColorStop(1, 'rgb(179,0,0)');
+
+            var stroke5 = ctx.createLinearGradient(0, 0, 1000, 0);
+            stroke5.addColorStop(0, 'rgb(237,248,251)');
+            stroke5.addColorStop(.25, 'rgb(179,205,227)');
+            stroke5.addColorStop(.5, 'rgb(140,150,198)');
+            stroke5.addColorStop(.75, 'rgb(136,86,167)');
+            stroke5.addColorStop(1, 'rgb(129,15,124)');
+
+            var stroke6 = ctx.createLinearGradient(0, 0, 1000, 0);
+            stroke6.addColorStop(0, 'rgb(241,238,246)');
+            stroke6.addColorStop(.25, 'rgb(189,201,225)');
+            stroke6.addColorStop(.5, 'rgb(116,169,207)');
+            stroke6.addColorStop(.75, 'rgb(43,140,190)');
+            stroke6.addColorStop(1, 'rgb(4,90,141)');
+
+  			    Chart.defaults.global.defaultFontSize = 16;
+  			    Chart.defaults.global.defaultFontFamily = 'Roboto';
+            Chart.defaults.global.defaultFontColor = '#CCCCCC';
+
+         		var data = {
+         			labels : ['2019-01-02', '2019-01-03', '2019-01-04', '2019-01-07', '2019-01-08', '2019-01-09', '2019-01-10', '2019-01-11', '2019-01-14', '2019-01-15', '2019-01-16', '2019-01-17', '2019-01-18', '2019-01-22', '2019-01-23', '2019-01-24', '2019-01-25', '2019-01-28', '2019-01-29', '2019-01-30', '2019-01-31', '2019-02-01', '2019-02-04', '2019-02-05', '2019-02-06', '2019-02-07', '2019-02-08', '2019-02-11', '2019-02-12', '2019-02-13', '2019-02-14'],
+         			datasets : [
+            			{
+              			label: "Predicted",
+                      backgroundColor: 'rgba(247,104,161, .1)',
+                    	borderColor: stroke1,
+                   		pointBackgroundColor: stroke1,
+                		  data: [73.81936352898515, 73.90259513964924, 73.98579740111481, 74.06897032373104, 74.15211391784342, 74.23522819379377, 74.31831316192032, 74.40136883255755, 74.48439521603643, 74.56739232268421, 74.65036016282448, 74.73329874677725, 74.81620808485883, 74.89908818738198, 74.9819390646557, 75.06476072698547, 75.14755318467309, 75.23031644801668, 75.31305052731079, 75.39575543284636, 75.47843117491058, 75.56107776378718, 75.64369520975615, 75.72628352309391, 75.8088427140732, 75.89137279296318, 75.9738737700294, 76.0563456555337, 76.13878845973446, 76.2212021928863, 76.30358686524028]
+            			},
+            			{
+              			label: "Actual",
+                    backgroundColor: 'rgba(253,141,60, .1)',
+                    	borderColor: stroke2,
+                   		pointBackgroundColor: stroke2,
+                		data: [69.599998, 71.510002, 73.75, 74.699997, 76.349998, 75.309998, 76.800003, 74.410004, 74.489998, 73.639999, 73.660004, 73.730003, 73.730003, 74.019997, 74.510002, 75.510002, 75.510002, 75.879997, 75.879997, 75.07, 76.160004, 76.160004, 76.75, 78.650002, 78.650002, 76.389999, 76.339996, 76.400002, 76.400002, 76.82, 73.839996]
+            			}
+            		],
+            	}
+            	var options = {
+                legend: {
+                  display: true,
+                  position: 'bottom',
+                  labels: {
+                    fontColor: "#000080",
+                  }
+                },
+                maintainAspectRatio: false,
+                responsive: true,
+          			legend: {
+                		display: false,
+                		labels: {
+                  			fontColor: '#FF0000'
+                		}
+            		},
+            		scales: {
+    	             xAxes: [{
+                       ticks: {
+                           display: true,
+                           autoSkip: true,
+                           maxTicksLimit: 12,
+                           maxRotation: 45,
+                           minRotation: 45
+                       },
+      	              display: true,
+    	                scaleLabel: {
+    	                   display: true,
+    	                   labelString: 'Date'
+                      },
+                      gridLines: {
+                        display: true,
+                        color: "rgba(255,99,132,0.2)"
+                      }
+    	             }],
+                   yAxes: [{
+                     gridLines: {
+                       display: true,
+                       color: "rgba(255,99,132,0.2)"
+                     },
+                     scaleLabel: {
+                        display: true,
+                        labelString: 'Closing Price'
+                     },
+                   }],
+                },
+  			      }
+
+         		var lineChart = new Chart(ctx, {
+  			    type: 'line',
+  			    data: data,
+  			    options: options
+  			});
+      	</script>
+    </div>
+  </div>
+  </body>
+</html>

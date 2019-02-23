@@ -1,0 +1,60 @@
+:root {
+  --main-bg: #BBBBBB;
+  --graph-bg: black;
+
+  --title-bg: #CCCCCC;
+  --title-text: black;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: black;
+  background-color: var(--main-bg);
+}
+
+.info {
+  border: 2px solid black;
+  background-color: white;
+  color: black;
+  padding: 3vw;
+  width: 70vw;
+  margin: auto;
+  font-size: 1.2em;
+}
+
+.grid {
+  margin: auto;
+	margin-top: 2em;
+	width: 70%;
+	display: grid;
+	grid-template-rows: 6;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+}
+
+.graphtitle {
+	height: 3em;
+	background-color: var(--title-text);
+	color: var(--title-bg);
+	text-align: center;
+	padding-top: 1.2em;
+	font-size: 1.2em;
+  width: 70vw;
+  margin: auto;
+  margin-top: 3vh;
+}
+
+.graphcontainer {
+  padding-top: 30px;
+  padding-left: 20px;
+  position: relative;
+  height: 72vh;
+  width: 64vw;
+  background-color: var(--graph-bg);
+}
+
+.graph {
+  margin: auto;
+  background-color: var(--graph-bg);
+  height: 80vh;
+  width: 70vw;
+}
