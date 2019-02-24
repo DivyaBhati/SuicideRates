@@ -11,126 +11,108 @@
   </head>
 
   <body>
+    <nav id="navMenu"></nav>
+    <script src="{{url_for('static', filename='navigate.js')}}"></script>
     <div class="form">
 	   {{ wtf.quick_form(form) }}
     </div>
     {% if country == None %}
     <div class = "info">Please choose a country and a factor to compare with.</div>
     {% else %}
-  	<div class="graphtitle"> USA Suicide Rates</div>
+  	<div class="graphtitle"> USA Suicide Rates </div>
     <div class="graph">
   	<div class="graphcontainer">
       	<canvas id="US"></canvas>
       	<script>
        	    var canvas = document.getElementById("US");
   			    var ctx = canvas.getContext('2d');
-            var stroke1 = ctx.createLinearGradient(0, 0, 1000, 0);
-            stroke1.addColorStop(0, 'rgb(254,235,226)');
-            stroke1.addColorStop(.25, 'rgb(251,180,185)');
-            stroke1.addColorStop(.5, 'rgb(247,104,161)');
-            stroke1.addColorStop(.75, 'rgb(197,27,138)');
-            stroke1.addColorStop(1, 'rgb(122,1,119)');
-
-            var stroke2 = ctx.createLinearGradient(0, 0, 1000, 0);
-            stroke2.addColorStop(0, 'rgb(255,255,178)');
-            stroke2.addColorStop(.25, 'rgb(254,204,92)');
-            stroke2.addColorStop(.5, 'rgb(253,141,60)');
-            stroke2.addColorStop(.75, 'rgb(240,59,32)');
-            stroke2.addColorStop(1, 'rgb(189,0,38)');
-
-            var stroke3 = ctx.createLinearGradient(0, 0, 1000, 0);
-            stroke3.addColorStop(0, 'rgb(255,255,204)');
-            stroke3.addColorStop(.25, 'rgb(161,218,180)');
-            stroke3.addColorStop(.5, 'rgb(65,182,196)');
-            stroke3.addColorStop(.75, 'rgb(44,127,184)');
-            stroke3.addColorStop(1, 'rgb(37,52,148)');
-
-            var stroke4 = ctx.createLinearGradient(0, 0, 1000, 0);
-            stroke4.addColorStop(0, 'rgb(254,240,217)');
-            stroke4.addColorStop(.25, 'rgb(253,204,138)');
-            stroke4.addColorStop(.5, 'rgb(252,141,89)');
-            stroke4.addColorStop(.75, 'rgb(227,74,51)');
-            stroke4.addColorStop(1, 'rgb(179,0,0)');
-
-            var stroke5 = ctx.createLinearGradient(0, 0, 1000, 0);
-            stroke5.addColorStop(0, 'rgb(237,248,251)');
-            stroke5.addColorStop(.25, 'rgb(179,205,227)');
-            stroke5.addColorStop(.5, 'rgb(140,150,198)');
-            stroke5.addColorStop(.75, 'rgb(136,86,167)');
-            stroke5.addColorStop(1, 'rgb(129,15,124)');
-
-            var stroke6 = ctx.createLinearGradient(0, 0, 1000, 0);
-            stroke6.addColorStop(0, 'rgb(241,238,246)');
-            stroke6.addColorStop(.25, 'rgb(189,201,225)');
-            stroke6.addColorStop(.5, 'rgb(116,169,207)');
-            stroke6.addColorStop(.75, 'rgb(43,140,190)');
-            stroke6.addColorStop(1, 'rgb(4,90,141)');
 
   			    Chart.defaults.global.defaultFontSize = 16;
   			    Chart.defaults.global.defaultFontFamily = 'Roboto';
-            Chart.defaults.global.defaultFontColor = '#CCCCCC';
+            Chart.defaults.global.defaultFontColor = '#222222';
 
          		var data = {
-         			labels : ['1979', '1980', '1981', '1982', '1983', '1984', '1985', '1986', '1987', '1988', '1989', '1990', '1991', '1992', '1993', '1994', '1995', '1996', '1997', '1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015'],
+         			labels : {{ country_data[1] }},
          			datasets : [
             			{
+                		label: "{{ factor }}",
+                    yAxisID: 'Factor',
+                    backgroundColor: 'rgba(247,104,161, 0)',
+                    borderColor: 'rgb(158,1,66)',
+                    pointBackgroundColor: 'rgb(158,1,66)',
+                    data: {{ country_data[0] }}
+              		},
+                  {
+                    hidden: true,
               			label: "Ages 5-14",
-                      backgroundColor: 'rgba(247,104,161, 0)',
-                    	borderColor: stroke1,
-                   		pointBackgroundColor: stroke1,
-                		  data: [0.86, 0.8, 0.97, 1.16, 1.19, 1.35, 1.62, 1.49, 1.45, 1.39, 1.35, 1.49, 1.46, 1.7, 1.72, 1.69, 1.74, 1.55, 1.56, 1.63, 1.22, 1.47, 1.34, 1.27, 1.2, 1.39, 1.33, 1.08, 0.9, 1.07, 1.28, 1.31, 1.37, 1.49, 1.89, 2.04, 1.98]
+                    yAxisID: 'Suicide Rate',
+                    backgroundColor: 'rgba(247,104,161, 0)',
+                    borderColor: 'rgb(244,109,67)',
+                   	pointBackgroundColor: 'rgb(244,109,67)',
+                		data: {{ country_data[2] }}
             			},
             			{
+                    hidden: true,
               			label: "Ages 15-25",
+                    yAxisID: 'Suicide Rate',
                     backgroundColor: 'rgba(253,141,60, 0)',
-                    	borderColor: stroke2,
-                   		pointBackgroundColor: stroke2,
-                		data: [24.59, 24.52, 24.35, 24.03, 22.94, 24.91, 25.74, 26.06, 25.57, 26.17, 26.47, 25.91, 25.7, 25.56, 26.53, 27.17, 26.23, 23.6, 22.46, 21.87, 20.32, 20.03, 19.53, 19.4, 18.99, 20.32, 19.65, 19.36, 18.98, 19.54, 19.73, 20.67, 21.5, 21.66, 21.66, 22.57, 24.5]
+                    borderColor: 'rgb(253,174,97)',
+                   	pointBackgroundColor: 'rgb(253,174,97)',
+                    data: {{ country_data[3] }}
             			},
                   {
+                    hidden: true,
               			label: "Ages 25-34",
-                      backgroundColor: 'rgba(247,104,161, 0)',
-                    	borderColor: stroke3,
-                   		pointBackgroundColor: stroke3,
-                		  data: [32.66, 31.78, 32.82, 32.25, 32.03, 31.05, 30.36, 31.38, 30.72, 30.71, 29.93, 30.37, 30.4, 29.07, 30.12, 30.73, 30.8, 29.03, 28.63, 27.79, 27.05, 23.89, 25.43, 25.09, 25.18, 25.1, 24.6, 24.4, 25.88, 26.54, 26.39, 28.17, 29.56, 29.67, 29.8, 30.34, 31.56]
+                    yAxisID: 'Suicide Rate',
+                    backgroundColor: 'rgba(247,104,161, 0)',
+                  	borderColor: 'rgb(254,224,139)',
+                 		pointBackgroundColor: 'rgb(254,224,139)',
+                    data: {{ country_data[4] }}
             			},
                   {
+                    hidden: true,
               			label: "Ages 35-54",
-                      backgroundColor: 'rgba(247,104,161, 0)',
-                    	borderColor: stroke4,
-                   		pointBackgroundColor: stroke4,
-                		  data: [32.23, 31.49, 32.33, 32.16, 31.48, 31.43, 30.35, 31.63, 31.01, 29.7, 29.52, 30.47, 30.25, 30.02, 30.02, 30.08, 30.16, 30.78, 30.29, 30.49, 28.86, 29.15, 30.06, 31.15, 30.88, 31.74, 31.5, 32.38, 33.61, 34.88, 35.6, 35.93, 36.33, 36.92, 36.07, 37.0, 37.69]
+                    yAxisID: 'Suicide Rate',
+                    backgroundColor: 'rgba(247,104,161, 0)',
+                    borderColor: 'rgb(221,28,119)',
+                   	pointBackgroundColor: 'rgb(230,245,152)',
+                    data: {{ country_data[5] }}
             			},
                   {
+                    hidden: true,
               			label: "Ages 55-74",
-                      backgroundColor: 'rgba(247,104,161, 0)',
-                    	borderColor: stroke5,
-                   		pointBackgroundColor: stroke5,
-                		  data: [36.0, 34.32, 34.31, 36.18, 36.05, 37.72, 36.84, 38.29, 37.56, 35.51, 35.01, 35.66, 34.04, 32.92, 32.5, 30.11, 30.44, 30.14, 29.25, 28.41, 27.02, 25.59, 27.46, 28.2, 27.75, 27.43, 27.69, 28.5, 29.79, 31.54, 32.09, 33.17, 33.33, 34.27, 35.25, 36.42, 36.29]
+                    yAxisID: 'Suicide Rate',
+                    backgroundColor: 'rgba(247,104,161, 0)',
+                  	borderColor: 'rgb(102,194,165)',
+                   	pointBackgroundColor: 'rgb(102,194,165)',
+                    data: {{ country_data[6] }}
             			},
                   {
+                    hidden: true,
               			label: "Ages 75+",
-                      backgroundColor: 'rgba(247,104,161, 0)',
-                    	borderColor: stroke6,
-                   		pointBackgroundColor: stroke6,
-                		  data: [51.38, 48.92, 47.9, 51.41, 56.79, 55.04, 59.81, 62.8, 65.35, 64.23, 60.16, 63.9, 61.92, 58.5, 58.23, 56.25, 53.72, 51.35, 49.77, 50.32, 46.3, 46.45, 44.4, 44.91, 41.64, 40.92, 41.91, 39.41, 39.96, 39.67, 39.1, 39.64, 40.27, 41.13, 42.0, 42.96, 43.39]
+                    yAxisID: 'Suicide Rate',
+                    backgroundColor: 'rgba(247,104,161, 0)',
+                  	borderColor: 'rgb(50,136,189)',
+                   	pointBackgroundColor: 'rgb(50,136,189)',
+                    data: {{ country_data[7] }}
+            			},
+                  {
+              			label: "Overall",
+                    yAxisID: 'Suicide Rate',
+                    backgroundColor: 'rgba(247,104,161, 0)',
+                  	borderColor: 'rgb(94,79,162)',
+                   	pointBackgroundColor: 'rgb(94,79,162)',
+                    data: {{ country_data[8] }}
             			}
             		],
             	}
             	var options = {
-                legend: {
-                  display: true,
-                  position: 'bottom',
-                  labels: {
-                    fontColor: "#000080",
-                  }
-                },
                 maintainAspectRatio: false,
                 responsive: true,
           			legend: {
-                		display: false,
+                		display: true,
                 		labels: {
-                  			fontColor: '#FF0000'
+                  			fontColor: '#000000'
                 		}
             		},
             		scales: {
@@ -149,19 +131,29 @@
                       },
                       gridLines: {
                         display: true,
-                        color: "rgba(255,99,132,0.2)"
+                        color: "rgba(0,0,0,1)"
                       }
     	             }],
                    yAxes: [{
-                     gridLines: {
-                       display: true,
-                       color: "rgba(255,99,132,0.2)"
-                     },
+                     id: 'Suicide Rate',
+                     type: 'linear',
+                     position: 'left',
+                     display: true,
                      scaleLabel: {
-                        display: true,
-                        labelString: 'Suicides Per 100,000 Population'
-                     },
-                   }],
+                         display: true,
+                         labelString: 'Suicide Rate'
+                       }
+                   }, {
+                     id: 'Factor',
+                     type: 'linear',
+                     position: 'right',
+                     display: true,
+                     scaleLabel: {
+                         display: true,
+                         labelString: '{{ factor }} Rate'
+                       }
+
+                   }]
                 },
   			      }
 

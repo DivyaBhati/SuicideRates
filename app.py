@@ -31,9 +31,10 @@ def compare():
     factor = None
     form = compare_form()
     if form.validate_on_submit():
-        country = form.country
-        factor = form.factor
-        return render_template('compare.html', form=form, country=country, factor=factor)
+        country = form.country.data
+        factor = form.factor.data
+        country_data = all_and_suicides(factor, country)
+        return render_template('compare.html', form=form, country=country, factor=factor, country_data=country_data)
     return render_template('compare.html', form=form, country=country, factor=factor)
 
 

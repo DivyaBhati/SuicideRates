@@ -21,7 +21,7 @@ def age_group_data(country):
     return ages
 
 #rawdata is a csv with the first column country name and remaining years
-#works with most WHO data as long as you delete their weird erroneous empty columns and rows they put in 
+#works with most WHO data as long as you delete their weird erroneous empty columns and rows they put in
 #return is a dictionary of the form year:value for the inputted country and data
 def who_extract(rawdata, country):
 	dict_list = rawdata.to_dict(orient='records')
@@ -44,9 +44,9 @@ def something_and_suicides(country, data):
 	mindata = min(data_years)
 	minsuic = min(suicide_years)
 	maxdata = max(data_years)
-	maxsuic = max(suicide_years) 
+	maxsuic = max(suicide_years)
 	start_year = mindata if mindata > minsuic else minsuic
-	end_year = maxdata if maxdata < maxsuic else maxsuic	
+	end_year = maxdata if maxdata < maxsuic else maxsuic
 	something = interpolate_dict(start_year, end_year, data)
 	return([something] + suicides_list_adjusted(suicides, start_year, end_year))
 
@@ -110,3 +110,14 @@ def internet_and_suicides(country):
 def alcohol_and_suicides(country):
 	data = pd.read_csv('data/alcohol.csv')
 	return(something_and_suicides(country, who_extract(data, country)))
+
+def all_and_suicides(input, country):
+    input = input.lower()
+    mapping = {
+        "gdp": gdp_and_suicides(country),
+        "pollution": pollution_and_suicides(country),
+        "education": education_and_suicides(country),
+        "internet": internet_and_suicides(country),
+        "alcohol": alcohol_and_suicides(country)
+    }
+    return mapping[input]
