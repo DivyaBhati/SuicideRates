@@ -46,6 +46,10 @@ def internet_data(country):
 	data = pd.read_csv('data/internetusers.csv')
 	return(who_extract(data, country))
 
+def alcohol_data(country):
+	data = pd.read_csv('data/alcohol.csv')
+	return(who_extract(data, country))
+
 
 def something_and_suicides(country, data):
 	suicides = age_group_data(country)
@@ -97,3 +101,8 @@ def education_and_suicides(country):
 
 def internet_and_suicides(country):
 	return(something_and_suicides(country, internet_data(country)))
+
+def alcohol_and_suicides(country):
+	return(something_and_suicides(country, alcohol_data(country)))
+
+print(alcohol_and_suicides('United States of America'))
