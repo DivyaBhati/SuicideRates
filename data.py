@@ -9,7 +9,6 @@ def age_group_data(country):
     data = suicides.loc[suicides['country'] == country]
     ages = {"5-14 years":{}, "15-24 years":{}, "25-34 years": {}, "35-54 years":{}, "55-74 years":{}, "75+ years": {}, "Overall": {}}
     idx = (~pd.isnull(data['suicides_no']) & ~pd.isnull(data['population'])).idxmax()
-    print(idx)
     firstyear = suicides.iloc[idx]['year']
     for i in range(firstyear, 2016):
         total_pop = 1
