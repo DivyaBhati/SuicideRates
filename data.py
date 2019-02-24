@@ -61,15 +61,16 @@ def something_and_suicides(country, data):
 	end_year = maxdata if maxdata < maxsuic else maxsuic
 
 	years = list(range(start_year, end_year + 1))
-	something = interpolate_dict(start_year, end_year, suicide['5-14 years'])
-	kids = interpolate_dict(start_year, end_year, suicide['15-24 years'])
-	teens = interpolate_dict(start_year, end_year, suicide['25-34 years'])
-	adults = interpolate_dict(start_year, end_year, suicide['35-54 years'])
-	middleage = interpolate_dict(start_year, end_year, suicide['55-74 years'])
-	olds = interpolate_dict(start_year, end_year, suicide['75+ years'])
+	something = interpolate_dict(start_year, end_year, data)
+	kids = interpolate_dict(start_year, end_year, suicide['5-14 years'])
+	teens = interpolate_dict(start_year, end_year, suicide['15-24 years'])
+	adults = interpolate_dict(start_year, end_year, suicide['25-34 years'])
+	middleage = interpolate_dict(start_year, end_year, suicide['35-54 years'])
+	olds = interpolate_dict(start_year, end_year, suicide['55-74 years'])
+	geriatrics = interpolate_dict(start_year, end_year, suicide['75+ years'])
 	overall = interpolate_dict(start_year, end_year, suicide['Overall'])
 
-	return([years, something, kids, teens, adults, middleage, olds, overall])
+	return([years, something, kids, teens, adults, middleage, olds, geriatrics, overall])
 
 def suicides_list(country):
 	suicide = ageGroupData(country)
@@ -78,11 +79,12 @@ def suicides_list(country):
 	end_year = max(suicide_years)
 
 	years = list(range(start_year, end_year + 1))
-	kids = interpolate_dict(start_year, end_year, suicide['15-24 years'])
-	teens = interpolate_dict(start_year, end_year, suicide['25-34 years'])
-	adults = interpolate_dict(start_year, end_year, suicide['35-54 years'])
-	middleage = interpolate_dict(start_year, end_year, suicide['55-74 years'])
-	olds = interpolate_dict(start_year, end_year, suicide['75+ years'])
+	kids = interpolate_dict(start_year, end_year, suicide['5-14 years'])
+	teens = interpolate_dict(start_year, end_year, suicide['15-24 years'])
+	adults = interpolate_dict(start_year, end_year, suicide['25-34 years'])
+	middleage = interpolate_dict(start_year, end_year, suicide['35-54 years'])
+	olds = interpolate_dict(start_year, end_year, suicide['55-74 years'])
+	geriatrics = interpolate_dict(start_year, end_year, suicide['75+ years'])
 	overall = interpolate_dict(start_year, end_year, suicide['Overall'])
 
 	return([years, kids, teens, adults, middleage, olds, overall])
@@ -98,3 +100,5 @@ def interpolate_dict(start_year, end_year, data):
 
 	datalist = pd.Series(datalist).interpolate(method='linear').tolist()
 	return(datalist)
+
+print(something_and_suicides('United States of America', gdp_data_country('United States of America')))
