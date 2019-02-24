@@ -19,7 +19,7 @@
     {% if country == None %}
     <div class = "info">Please choose a country and a factor to compare with.</div>
     {% else %}
-  	<div class="graphtitle"> USA Suicide Rates </div>
+  	<div class="graphtitle"> {{ country }} Suicide Rates Per 100,000 </div>
     <div class="graph">
   	<div class="graphcontainer">
       	<canvas id="US"></canvas>
@@ -141,7 +141,7 @@
                      display: true,
                      scaleLabel: {
                          display: true,
-                         labelString: 'Suicide Rate'
+                         labelString: 'Suicide Rate Per 100,000'
                        }
                    }, {
                      id: 'Factor',

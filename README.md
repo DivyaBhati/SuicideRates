@@ -2,9 +2,9 @@
 
 For this project we analyzed and graphed the link between suicide rates and various other external factors.
 
-![GDP and Suicide Rates](link)
+![GDP and Suicide Rates](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/768/919/datas/gallery.jpg)
 
-case studies blah blah
+We also analyzed the connection between suicide rates and government mandated healthcare.
 
 ## Built With
 
