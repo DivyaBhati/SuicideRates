@@ -9,8 +9,6 @@ import pandas as pd
 import math
 from data import *
 
-
-
 app = Flask(__name__)
 nav = Navigation(app)
 bootstrap = Bootstrap(app)
@@ -41,6 +39,9 @@ def compare():
         return render_template('compare.html', form=form, country=country, factor=factor, country_data=country_data)
     return render_template('compare.html', form=form, country=country, factor=factor)
 
+@app.route('/healthcare', methods=['GET', 'POST'])
+def healthcare():
+    return render_template('graph.html')
 
 #Run app
 if __name__ == '__main__':
