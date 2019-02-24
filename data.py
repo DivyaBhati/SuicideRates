@@ -49,7 +49,8 @@ def gdp_data_country(country):
 	data = {int(k):v for k,v in data.items()}
 	return(data)
 
-def something_and_suicides(data, suicide):
+def something_and_suicides(data, country):
+	suicide = ageGroupData(country)
 	data_years = data.keys()
 	suicide_years = suicide['5-14 years'].keys()
 	mindata = min(data_years)
@@ -59,17 +60,29 @@ def something_and_suicides(data, suicide):
 	start_year = mindata if mindata > minsuic else minsuic
 	end_year = maxdata if maxdata < maxsuic else maxsuic
 
-	years = range(start_year, end_year)
+	years = list(range(start_year, end_year))
+	something = interpolate_dict(start_year, end_year, suicide['5-14 years'])
+	kids = interpolate_dict(start_year, end_year, suicide['15-24 years'])
+	teens = interpolate_dict(start_year, end_year, suicide['25-34 years'])
+	adults = interpolate_dict(start_year, end_year, suicide['35-54 years'])
+	middleage = interpolate_dict(start_year, end_year, suicide['55-74 years'])
+	olds = interpolate_dict(start_year, end_year, suicide['75+ years'])
+	overall = interpolate_dict(start_year, end_year, suicide['Overall'])
+
+	return([years, something, kids, teens, adults, middleage, olds, overall])
 
 
-def interpolate_list(start_year, end_year, data):
+
+def interpolate_dict(start_year, end_year, data):
 	datalist = []
+	data_years = data.keys()
 	for i in range(start_year, end_year):
 		if i in data_years:
 			datalist.append(data[i])
 		else:
 			datalist.append(np.nan)
 
-	datalist = pd.Series(datalist).interpolate().tolist()
+	datalist = pd.Series(datalist).interpolate(method='linear').tolist()
 	return(datalist)
 
+# print(something_and_suicides(gdp_data_country('United States of America'), 'United States of America'))
