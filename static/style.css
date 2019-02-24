@@ -1,7 +1,9 @@
 :root {
   --main-bg: #BBBBBB;
-  --graph-bg: black;
+  --graph-bg: white;
 
+  --nav-bg: #333366;
+  --nav-text: white;
   --title-bg: #CCCCCC;
   --title-text: black;
 }
@@ -20,6 +22,7 @@ body {
   width: 70vw;
   margin: auto;
   font-size: 1.2em;
+  margin-top: 5em;
 }
 
 .grid {
@@ -57,4 +60,63 @@ body {
   background-color: var(--graph-bg);
   height: 80vh;
   width: 70vw;
+}
+
+ul {
+  height: 9vh;
+	position: absolute;
+	left: 0;
+	right: 0;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+  background-color: var(--nav-bg);
+  color: var(--nav-text);
+  padding-top: 1.3vh;
+  font-size: 1em;
+}
+
+li {
+    float: left;
+}
+
+/*make buttons*/
+li a {
+    display: block;
+    color: white;
+    font-size: 1em;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/*changes background color on hover*/
+li a:hover {
+    filter: brightness(150%);
+     border: 1px solid white;
+}
+
+/*makes button text be normal instead of blue underlined link*/
+li a:link
+{
+   color: var(--nav-text);
+   text-decoration: none;
+   font-size: 1em;
+}
+/*makes button text not change after visit*/
+li a:visited
+{
+   color: var(--nav-text);
+   text-decoration: none;
+}
+
+/*shows what page you are on*/
+.active {
+    background-color: rgba(0, 0, 0, .9);
+}
+
+.form {
+  margin-top: 5em;
 }
