@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from collections import defaultdict
+
 
 suicides = pd.read_csv("data/who_suicide_statistics.csv")
 gdp = pd.read_csv("data/gdp/gdp.csv")
@@ -11,10 +11,16 @@ def ageGroupData(country):
     data = suicides.loc[suicides['country'] == country]
     ages = {"5-14 years":{}, "15-24 years":{}, "25-34 years": {}, "35-54 years":{}, "55-74 years":{}, "75+ years": {}}
     for i in range(1979, 2016):
+    	total_pop = 0
+    	total_suicides
         year_data = data.loc[data['year'] == i]
         for index, row in year_data.iterrows():
             val = row['suicides_no'] / row['population'] * 100000
+            total_suicides += row['suicides_no']
+            total_pop += row['population']
             ages[row['age']][i] = round(ages[row['age']].get(i, 0) + val, 2)
+        
+
     return ages
 
 #Returns data in list format for graphing
@@ -37,14 +43,47 @@ def gdp_data():
 
 def gdp_data_country(country):
 	data = gdp_data()[country]
-	year = []
-	gdp = []
-	for key, value in data.items():
-		year.append(key)
-		gdp.append(value)
-	year = year[4:]
-	gdp = gdp[4:]
-	return([year, gdp])
+	del data['Country Name']
+	del data['Country Code']
+	del data['Indicator Name']
+	del data['Indicator Code']
+	data = {int(k):v for k,v in data.items()}
+	return(data)
+
+def something_and_suicides(data, suicide):
+	data_years = data.keys()
+	suicide_years = suicide['5-14 years'].keys()
+	mindata = min(data_years)
+	minsuic = min(suicide_years)
+	maxdata = max(data_years)
+	maxsuic = max(suicide_years) 
+	start_year = mindata if mindata > minsuic else minsuic
+	end_year = maxdata if maxdata < maxsuic else maxsuic
+
+	years = range(start_year, end_year)
+
+
+def intepolate_list(start_year, end_year, data)
+	datalist = []
+	for i in range(start_year, end_year):
+		if i in data_years:
+			datalist.append(data[i])
+		else:
+			datalist.append(np.nan)
+
+	datalist = pd.Series(datalist).interpolate().tolist()
+	return(datalist)
 
 
 
+
+
+
+
+
+
+
+
+
+print(ageGroupData('United States of America'))
+# print(gdp_data_country('United States of America'))
