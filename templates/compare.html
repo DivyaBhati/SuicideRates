@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block page_content %}
 <html>
   <head>
       <meta charset="utf-8" />
@@ -9,9 +11,12 @@
   </head>
 
   <body>
-    <div class="info">
-      Suicide rates.
+    <div class="form">
+	   {{ wtf.quick_form(form) }}
     </div>
+    {% if country == None %}
+    <div class = "info">Please choose a country and a factor to compare with.</div>
+    {% else %}
   	<div class="graphtitle"> USA Suicide Rates</div>
     <div class="graph">
   	<div class="graphcontainer">
@@ -168,5 +173,7 @@
       	</script>
     </div>
   </div>
+  {% endif %}
   </body>
 </html>
+{% endblock %}{{ wtf.quick_form(form) }}
