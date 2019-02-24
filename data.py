@@ -1,13 +1,9 @@
 import pandas as pd
 import numpy as np
 
-
-suicides = pd.read_csv("data/who_suicide_statistics.csv")
-gdp = pd.read_csv("data/gdp/gdp.csv")
-
-
 #Returns total suicides by age group for a country
 def age_group_data(country):
+    suicides = pd.read_csv("data/who_suicide_statistics.csv")
     data = suicides.loc[suicides['country'] == country]
     ages = {"5-14 years":{}, "15-24 years":{}, "25-34 years": {}, "35-54 years":{}, "55-74 years":{}, "75+ years": {}, "Overall": {}}
     for i in range(1979, 2016):
@@ -22,61 +18,62 @@ def age_group_data(country):
         ages['Overall'][i] = round(total_suicides / total_pop * 100000, 2)
     return ages
 
-def gdp_data():
-	dict_list = gdp.to_dict(orient='records')
-	gdp_dict_country = {}
+def who_extract(rawdata, country):
+	dict_list = rawdata.to_dict(orient='records')
+	dict_country = {}
 	for i in range(len(dict_list)):
-		gdp_dict_country[dict_list[i]['Country Name']] = dict_list[i]
-	return(gdp_dict_country)
-
-def gdp_data_country(country):
-	data = gdp_data()[country]
-	del data['Country Name']
-	del data['Country Code']
-	del data['Indicator Name']
-	del data['Indicator Code']
-	data = {int(k):v for k,v in data.items()}
+		dict_country[dict_list[i]['Country'].strip()] = dict_list[i]
+	data = dict_country[country]
+	del data['Country']
+	data = {int(k):round(v, 3) for k,v in data.items()}
 	return(data)
 
+def gdp_data(country):
+	data = pd.read_csv("data/gdp.csv")
+	return(who_extract(data, country))
+
+
+def pollution_data(country):
+	data = pd.read_csv("data/pollution.csv")
+	return(who_extract(data, country))
+
+
+def education_data(country):
+	data = pd.read_csv('data/education.csv')
+	return(who_extract(data, country))
+
+def internet_data(country):
+	data = pd.read_csv('data/internetusers.csv')
+	return(who_extract(data, country))
+
+
 def something_and_suicides(country, data):
-	suicide = age_group_data(country)
+	suicides = age_group_data(country)
 	data_years = data.keys()
-	suicide_years = suicide['5-14 years'].keys()
+	suicide_years = suicides['5-14 years'].keys()
 	mindata = min(data_years)
 	minsuic = min(suicide_years)
 	maxdata = max(data_years)
 	maxsuic = max(suicide_years) 
 	start_year = mindata if mindata > minsuic else minsuic
-	end_year = maxdata if maxdata < maxsuic else maxsuic
-
-	years = list(range(start_year, end_year + 1))
+	end_year = maxdata if maxdata < maxsuic else maxsuic	
 	something = interpolate_dict(start_year, end_year, data)
-	kids = interpolate_dict(start_year, end_year, suicide['5-14 years'])
-	teens = interpolate_dict(start_year, end_year, suicide['15-24 years'])
-	adults = interpolate_dict(start_year, end_year, suicide['25-34 years'])
-	middleage = interpolate_dict(start_year, end_year, suicide['35-54 years'])
-	olds = interpolate_dict(start_year, end_year, suicide['55-74 years'])
-	geriatrics = interpolate_dict(start_year, end_year, suicide['75+ years'])
-	overall = interpolate_dict(start_year, end_year, suicide['Overall'])
+	return([something] + suicides_list_adjusted(suicides, start_year, end_year))
 
-	return([years, something, kids, teens, adults, middleage, olds, geriatrics, overall])
-
-def suicides_list(country):
-	suicide = age_group_data(country)
-	suicide_years = suicide['5-14 years'].keys()
-	start_year = min(suicide_years)
-	end_year = max(suicide_years)
-
+def suicides_list_adjusted(suicide, start_year=0, end_year=0):
+	if start_year == 0:
+		suicide_years = suicide['5-14 years'].keys()
+		start_year = min(suicide_years)
+		end_year = max(suicide_years)
 	years = list(range(start_year, end_year + 1))
-	kids = interpolate_dict(start_year, end_year, suicide['5-14 years'])
-	teens = interpolate_dict(start_year, end_year, suicide['15-24 years'])
-	adults = interpolate_dict(start_year, end_year, suicide['25-34 years'])
-	middleage = interpolate_dict(start_year, end_year, suicide['35-54 years'])
-	olds = interpolate_dict(start_year, end_year, suicide['55-74 years'])
-	geriatrics = interpolate_dict(start_year, end_year, suicide['75+ years'])
-	overall = interpolate_dict(start_year, end_year, suicide['Overall'])
+	suicides_list = []
+	for key in suicide.keys():
+		suicides_list.append(interpolate_dict(start_year, end_year, suicide[key]))
+	return([years] + suicides_list)
 
-	return([years, kids, teens, adults, middleage, olds, overall])
+def country_suicides(country):
+	suicides = age_group_data(country)
+	return(suicides_list_adjusted(suicides))
 
 def interpolate_dict(start_year, end_year, data):
 	datalist = []
@@ -86,11 +83,17 @@ def interpolate_dict(start_year, end_year, data):
 			datalist.append(data[i])
 		else:
 			datalist.append(np.nan)
-
 	datalist = pd.Series(datalist).interpolate(method='linear').tolist()
 	return(datalist)
 
 def gdp_and_suicides(country):
-	return(something_and_suicides(country, gdp_data_country(country)))
+	return(something_and_suicides(country, gdp_data(country)))
 
-# print(gdp_and_suicides('United States of America'))
+def pollution_and_suicides(country):
+	return(something_and_suicides(country, pollution_data(country)))
+
+def education_and_suicides(country):
+	return(something_and_suicides(country, education_data(country)))
+
+def internet_and_suicides(country):
+	return(something_and_suicides(country, internet_data(country)))
