@@ -8,15 +8,21 @@ def age_group_data(country):
     suicides = pd.read_csv("data/who_suicide_statistics.csv")
     data = suicides.loc[suicides['country'] == country]
     ages = {"5-14 years":{}, "15-24 years":{}, "25-34 years": {}, "35-54 years":{}, "55-74 years":{}, "75+ years": {}, "Overall": {}}
-    for i in range(1979, 2016):
-        total_pop = 0
+    idx = (~pd.isnull(data['suicides_no']) & ~pd.isnull(data['population'])).idxmax()
+    print(idx)
+    firstyear = suicides.iloc[idx]['year']
+    for i in range(firstyear, 2016):
+        total_pop = 1
         total_suicides = 0
         year_data = data.loc[data['year'] == i]
         for index, row in year_data.iterrows():
-            val = row['suicides_no'] / row['population'] * 100000
-            total_suicides = total_suicides + row['suicides_no']
-            total_pop = total_pop + row['population']
-            ages[row['age']][i] = round(ages[row['age']].get(i, 0) + val, 2)
+            if pd.isnull(row['suicides_no']) or pd.isnull(row['population']):
+                ages[row['age']][i] = ages[row['age']][i-1]
+            else:
+                val = row['suicides_no'] / row['population'] * 100000
+                total_suicides = total_suicides + row['suicides_no']
+                total_pop = total_pop + row['population']
+                ages[row['age']][i] = round(ages[row['age']].get(i, 0) + val, 2)
         ages['Overall'][i] = round(total_suicides / total_pop * 100000, 2)
     return ages
 
