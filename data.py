@@ -117,12 +117,11 @@ def alcohol_and_suicides(country):
 	return(something_and_suicides(country, who_extract(data, country)))
 
 def all_and_suicides(input, country):
-    input = input.lower()
     mapping = {
-        "gdp": gdp_and_suicides(country),
-        "pollution": pollution_and_suicides(country),
-        "education": education_and_suicides(country),
-        "internet": internet_and_suicides(country),
-        "alcohol": alcohol_and_suicides(country)
+        "GDP": gdp_and_suicides(country),
+        "Pollution (Tons of CO2 Produced Per Capita)": pollution_and_suicides(country),
+        "Education Rate": education_and_suicides(country),
+        "Internet Users": internet_and_suicides(country),
+        "Alcohol (Average Consumption in Liters)": alcohol_and_suicides(country)
     }
     return mapping[input]
