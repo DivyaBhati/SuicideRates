@@ -1,17 +1,21 @@
 {% extends "base.html" %}
 {% block page_content %}
 <html>
-<head><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script></head>
+  <head>
+      <meta charset="utf-8" />
+      <title>HackIllinois</title>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+      <link rel="stylesheet" href="static/style.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  </head>
 
-<body>
-<div class="container">
-  <h2>Suicide Rates for Countries with Government Mandated Healthcare</h2>
-  <div>
+  <body>
+    <nav id="navMenu"></nav>
+    <script src="{{url_for('static', filename='navigate.js')}}"></script>
+    <div class="graphtitle"> Suicide Rates for Countries with Government Mandated Healthcare </div>
+    <div class="graph">
+    <div class="graphcontainer">
     <canvas id="chart"></canvas>
-  </div>
-</div>
-
-</body>
 <script>
 var canvas = document.getElementById('chart');
 new Chart(canvas, {
@@ -91,6 +95,19 @@ new Chart(canvas, {
   },
   options: {
     scales: {
+      xAxes: [{
+        ticks: {
+          display: true,
+          autoSkip: false,
+          maxRotation: 45,
+          minRotation: 45
+        },
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Years from Government-Mandated Healthcare'
+      },
+  }],
       yAxes: [{
         position: 'left',
         display: true,
@@ -104,7 +121,10 @@ new Chart(canvas, {
     }
   }
 });
-  </script>
+        </script>
+    </div>
+  </div>
+  </body>
 </html>
 
 {% endblock %}
