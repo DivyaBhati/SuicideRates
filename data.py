@@ -7,7 +7,7 @@ gdp = pd.read_csv("data/gdp/gdp.csv")
 
 
 #Returns total suicides by age group for a country
-def ageGroupData(country):
+def age_group_data(country):
     data = suicides.loc[suicides['country'] == country]
     ages = {"5-14 years":{}, "15-24 years":{}, "25-34 years": {}, "35-54 years":{}, "55-74 years":{}, "75+ years": {}, "Overall": {}}
     for i in range(1979, 2016):
@@ -21,17 +21,6 @@ def ageGroupData(country):
             ages[row['age']][i] = round(ages[row['age']].get(i, 0) + val, 2)
         ages['Overall'][i] = round(total_suicides / total_pop * 100000, 2)
     return ages
-
-#Returns data in list format for graphing
-def dataForGraphing(country):
-    ages = ageGroupData(country)
-    lists = []
-    for group in ages:
-        curr = []
-        for key, val in ages[group].items():
-            curr.append(val)
-        lists.append(curr)
-    return lists
 
 def gdp_data():
 	dict_list = gdp.to_dict(orient='records')
@@ -50,7 +39,7 @@ def gdp_data_country(country):
 	return(data)
 
 def something_and_suicides(country, data):
-	suicide = ageGroupData(country)
+	suicide = age_group_data(country)
 	data_years = data.keys()
 	suicide_years = suicide['5-14 years'].keys()
 	mindata = min(data_years)
@@ -73,7 +62,7 @@ def something_and_suicides(country, data):
 	return([years, something, kids, teens, adults, middleage, olds, geriatrics, overall])
 
 def suicides_list(country):
-	suicide = ageGroupData(country)
+	suicide = age_group_data(country)
 	suicide_years = suicide['5-14 years'].keys()
 	start_year = min(suicide_years)
 	end_year = max(suicide_years)
@@ -101,4 +90,7 @@ def interpolate_dict(start_year, end_year, data):
 	datalist = pd.Series(datalist).interpolate(method='linear').tolist()
 	return(datalist)
 
-print(something_and_suicides('United States of America', gdp_data_country('United States of America')))
+def gdp_and_suicides(country):
+	return(something_and_suicides(country, gdp_data_country(country)))
+
+# print(gdp_and_suicides('United States of America'))
