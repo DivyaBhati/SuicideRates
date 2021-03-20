@@ -13,7 +13,7 @@ get==2018.11.19
 gunicorn==19.9.0
 html5lib==0.999
 jedi==0.10.2
-Jinja2==2.9.6
+Jinja2==2.11.3
 more-itertools==4.1.0
 nltk==3.2.4
 numpy==1.15.2
