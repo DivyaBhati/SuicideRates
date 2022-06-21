@@ -16,7 +16,7 @@ jedi==0.10.2
 Jinja2==2.9.6
 more-itertools==4.1.0
 nltk==3.2.4
-numpy==1.15.2
+numpy==1.22.0
 oauthlib==2.0.6
 pandas==0.21.0
 pandocfilters==1.4.2
